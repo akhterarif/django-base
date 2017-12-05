@@ -9,7 +9,8 @@ from permissions.decorators import check_permission
 from ..custom_exceptions import MissUseError
 from ..utils import get_model_field_names
 from .soft_deletion_model import SoftDeletionModel
-# from .managers import
+
+from django.core.exceptions import Exception
 
 
 class BaseModel(SoftDeletionModel):
@@ -61,5 +62,52 @@ class BaseModel(SoftDeletionModel):
         auto_now=True,
     )
 
+    def _check_permission(self,
+                          user,
+                          permission,
+                          model):
+        """
+        Checks the permission of a user in a model
+        :param user: who's permission have to be checked
+        :param permission: name of the permission like 'add', change
+        :param model: which model's permission has to check
+
+        :return: Boolean value
+        """
+        permission_name = ''
+        permission_name = "{permission}_{model}".format(
+            permission=permission,
+            model=model.to_lower())
+        return getattr(user, permission_name)
+
+    def create(self, *args, **kwargs):
+        """
+        Creates an object and return that
+        """
+        permission = "add"
+        if not created_by:
+            raise Exception("'created_by' must be supplied."
+        if not self._check_permission(user=created_by,
+                                      permission=permission,
+                                      model=self.__class__.__name__):
+            raise Exception("User doesn't have ADD permission in {model}.".format(
+                model=self.__class__.__name__))
+        return super(BaseModel, self).create(*args, **kwargs)
+
+    def update(self, *args, **kwargs):
+        """
+        Updates an object and return number of objects is updated
+        """
+        permission="change"
+        if not updated_by:
+            raise Exception("'updated_by' must be supplied.")
+
+        if not self._check_permission(user=updated_by,
+                                      permission=permission,
+                                      model=self.__class__.__name__):
+            raise Exception("User doesn't have CHANGE permission in {model}.".format(
+                model=self.__class__.__name__))
+        return super(BaseModel, self).update(*args, **kwargs)
+
     class Meta:
-        abstract = True
+        abstract=True
