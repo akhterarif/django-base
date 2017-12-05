@@ -109,5 +109,14 @@ class BaseModel(SoftDeletionModel):
                 model=self.__class__.__name__))
         return super(BaseModel, self).update(*args, **kwargs)
 
+    def _created_at(self):
+        return self.created_at.date().isoformat()
+
+    def _update_at(self):
+        return self.updated_at.date().isoformat()
+
+    created_at=property(_created_at)
+    updated_at=property(_update_at)
+
     class Meta:
         abstract=True
