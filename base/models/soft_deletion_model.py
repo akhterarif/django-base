@@ -1,6 +1,8 @@
 from django.db import models
 from .managers import SoftDeletionManager
 
+from django.utils.translation import ugettext_lazy as _
+
 
 class SoftDeletionModel(models.Model):
     deleted_at = models.DateTimeField(
