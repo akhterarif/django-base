@@ -11,9 +11,8 @@ class CategoryModel(BaseModel):
     """
     name = models.CharField(
         max_length=128,
-        verbose_name=_('Document Number'),
-        help_text=_('User ID document number.'),
-        null=True, blank=True
+        verbose_name=_('Category Name'),
+        help_text=_('Category Name.')
     )
 
     def __str__(self):
