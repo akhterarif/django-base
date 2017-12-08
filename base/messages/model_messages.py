@@ -13,7 +13,7 @@ MODEL_MSG = {
 
 MANAGER_MSG = {
     'mm_test_1': {
-        'en': _('Apiview Test msg.'),
+        'en': _('Apiview Test msg {model_name}.'),
         'bn': _('হ্যালো বাংলাদেশ')
     }
 }

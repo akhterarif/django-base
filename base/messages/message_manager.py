@@ -17,12 +17,12 @@ class MessageManager(object):
         self.model_messages = MODEL_MSG
         self.manager_messages = MANAGER_MSG
         self.service_messages = SERVICE_MSG
-        self.all_messages = self.apiview_messages + self.generic_messages + \
-            self.model_messages + self.manager_messages + self.service_messages
+        self.all_messages = {**self.apiview_messages, **self.generic_messages,
+                             **self.model_messages, **self.manager_messages, **self.service_messages}
         self.default_language = settings.DEFAULT_LANGUAGE
         super(MessageManager, self).__init__()
 
-    def get_msg(self, code, language_code=None):
+    def get_msg(self, code, language_code=None, context_data={}):
         """
         Retrurns messages of a code
 
@@ -32,4 +32,4 @@ class MessageManager(object):
         """
         if language_code is None:
             language_code = self.default_language
-        return self.all_messages[code][language_code]
+        return self.all_messages[code][language_code].format(**context_data)
