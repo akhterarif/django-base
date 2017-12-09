@@ -36,7 +36,7 @@ class BaseModel(SoftDeletionModel):
     created_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name=_('Created By'),
-        help_text=_('User Who Create This Record'),
+        help_text=_('User Who Created This Record'),
         related_name='created_by',
         null=True, blank=True,
         on_delete=models.CASCADE,
@@ -44,7 +44,7 @@ class BaseModel(SoftDeletionModel):
     updated_by = models.ForeignKey(
         settings.AUTH_USER_MODEL,
         verbose_name=_('Updated By'),
-        help_text=_('User Who Last Update This Record'),
+        help_text=_('User Who Last Updated This Record'),
         related_name='updated_by',
         null=True, blank=True,
         on_delete=models.CASCADE,
@@ -97,9 +97,10 @@ class BaseModel(SoftDeletionModel):
         Updates an object and return number of objects is updated
         """
         permission = "change"
+        print('hasattr', hasattr(kwargs, 'updated_by'))
         if not updated_by:
             raise FieldError("'updated_by' must be supplied.")
-
+        print('updated_by', updated_by)
         if not self._check_permission(user=updated_by,
                                       permission=permission,
                                       model=self.__class__.__name__):
