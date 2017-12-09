@@ -1,6 +1,6 @@
 from django.db import models
 from .managers import SoftDeletionManager
-
+from django.utils import timezone
 from django.utils.translation import ugettext_lazy as _
 
 
