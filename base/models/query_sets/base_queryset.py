@@ -1,5 +1,5 @@
 from django.db.models.query import QuerySet
-
+from datetime import timezone
 
 class BaseQuerySet(QuerySet):
     def delete(self):
