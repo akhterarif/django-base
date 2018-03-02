@@ -1,9 +1,5 @@
 from base.admin import BaseModelAdmin
 
-from django.contrib import admin, messages
-from django.utils.translation import ugettext_lazy as _
-
-
 class CategoryAdmin(BaseModelAdmin):
     """
     This is admin for category

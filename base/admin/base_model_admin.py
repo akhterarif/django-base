@@ -1,6 +1,4 @@
-from django.contrib import admin, messages
-from django.utils.translation import ugettext_lazy as _
-
+from django.contrib import admin
 
 class BaseModelAdmin(admin.ModelAdmin):
     """
