@@ -1,12 +1,12 @@
 from django.db.models.query import QuerySet
+from datetime import timezone
 
-
-class SoftDeletionQuerySet(QuerySet):
+class BaseQuerySet(QuerySet):
     def delete(self):
-        return super(SoftDeletionQuerySet, self).update(deleted_at=timezone.now())
+        return super(BaseQuerySet, self).update(deleted_at=timezone.now())
 
     def hard_delete(self):
-        return super(SoftDeletionQuerySet, self).delete()
+        return super(BaseQuerySet, self).delete()
 
     def alive(self):
         return self.filter(deleted_at=None)

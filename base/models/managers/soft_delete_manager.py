@@ -1,5 +1,5 @@
 from django.db import models
-from ..query_sets import SoftDeletionQuerySet
+from ..query_sets import BaseQuerySet
 
 
 class SoftDeletionManager(models.Manager):
@@ -9,8 +9,8 @@ class SoftDeletionManager(models.Manager):
 
     def get_queryset(self):
         if self.alive_only:
-            return SoftDeletionQuerySet(self.model).filter(deleted_at=None)
-        return SoftDeletionQuerySet(self.model)
+            return BaseQuerySet(self.model).filter(deleted_at=None)
+        return BaseQuerySet(self.model)
 
     def hard_delete(self):
         return self.get_queryset().hard_delete()
