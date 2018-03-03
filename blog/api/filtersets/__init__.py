@@ -1,1 +1,2 @@
 from .category_filterset import CategoryFilterSet
+from .post_filterset import PostFilterSet
