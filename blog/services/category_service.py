@@ -4,7 +4,7 @@ from base.services import BaseService, BaseModelService
 
 class CategoryService(BaseService, BaseModelService):
     """
-    This model used for categories business logics
+    Category Service functions are enlisted here.
     """
 
     model = CategoryModel
