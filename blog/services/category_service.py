@@ -1,8 +1,8 @@
 from ..models import CategoryModel
-from base.services import BaseService
+from base.services import BaseService, BaseModelService
 
 
-class CategoryService(BaseService):
+class CategoryService(BaseService, BaseModelService):
     """
     This model used for categories business logics
     """
