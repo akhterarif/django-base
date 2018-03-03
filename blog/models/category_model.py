@@ -3,7 +3,7 @@ from django.db import connection, models
 from django.utils.translation import ugettext_lazy as _
 
 from base.models import BaseModel
-from .managers import CategoryManager
+from .managers import CategoryModelManager
 
 
 class CategoryModel(BaseModel):
@@ -19,7 +19,7 @@ class CategoryModel(BaseModel):
     def __str__(self):
         return "{name}".format(name=self.name)
 
-    objects = CategoryManager()
+    objects = CategoryModelManager()
 
     class Meta:
         db_table = 'blog_categories'
