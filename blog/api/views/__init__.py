@@ -1,1 +1,2 @@
-from .category_listing_apiview import CategoryListAPIView
+from .category_list_apiview import CategoryListAPIView
+from .post_list_apiview import PostListAPIView
