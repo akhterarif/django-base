@@ -134,3 +134,7 @@ STATIC_URL = '/static/'
 
 # Default language for messages
 DEFAULT_LANGUAGE = 'en'
+
+
+# default super admin name
+DEFAULT_SUPER_ADMIN_NAME='arif'
