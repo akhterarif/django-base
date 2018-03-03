@@ -5,9 +5,7 @@ class CategoryModelSerializer(BaseModelSerializer):
 	"""
 	CategoryModelSerializer for category
 	"""
-	def __init__(self):
-		super(CategoryModelSerializer, self).__init__()
 
 	class Meta:
 		model = CategoryModel
-		fields = ('name')
+		fields = ('uuid', 'name')
