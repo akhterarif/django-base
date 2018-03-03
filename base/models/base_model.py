@@ -34,7 +34,7 @@ class BaseModel(SoftDeletionModel):
         settings.AUTH_USER_MODEL,
         verbose_name=_('Created By'),
         help_text=_('User Who Created This Record'),
-        related_name='created_by',
+        related_name='%(class)s_created_by',
         null=True, blank=True,
         on_delete=models.CASCADE,
     )
@@ -42,7 +42,7 @@ class BaseModel(SoftDeletionModel):
         settings.AUTH_USER_MODEL,
         verbose_name=_('Updated By'),
         help_text=_('User Who Last Updated This Record'),
-        related_name='updated_by',
+        related_name='%(class)s_updated_by',
         null=True, blank=True,
         on_delete=models.CASCADE,
     )
