@@ -6,6 +6,9 @@ class BaseFilterSet(FilterSet):
 	"""
 	uuid = CharFilter(name="uuid", lookup_expr='exact')
 
-	def __init__(self, *args, **kwrgs):
-		super(BaseFilterSet, self).__init__(*args, **kwrgs)
+	def __init__(self,
+				 *args,
+				 **kwrgs):
+		super(BaseFilterSet, self).__init__(*args,
+											**kwrgs)
 

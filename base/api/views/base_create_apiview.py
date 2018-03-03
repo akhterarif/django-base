@@ -4,5 +4,8 @@ class BaseCreateAPIView(CreateAPIView):
 	"""
 	BaseCreateAPIView for the project
 	"""
-	def __init__(self):
-		super(BaseCreateAPIView, self).__init__()
+	def __init__(self,
+				 *args,
+				 **kwargs):
+		super(BaseCreateAPIView, self).__init__(*args,
+												**kwargs)
