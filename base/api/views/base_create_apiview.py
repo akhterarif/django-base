@@ -1,6 +1,7 @@
 from rest_framework.generics import CreateAPIView
+from rest_framework.mixins import CreateModelMixin
 
-class BaseCreateAPIView(CreateAPIView):
+class BaseCreateAPIView(CreateAPIView, CreateModelMixin):
 	"""
 	BaseCreateAPIView for the project
 	"""
