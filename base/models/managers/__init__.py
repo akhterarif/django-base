@@ -1,2 +1,2 @@
 from .soft_delete_manager import SoftDeletionManager
-from .base_manager import BaseManager
+from .base_model_manager import BaseModelManager

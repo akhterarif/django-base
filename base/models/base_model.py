@@ -6,8 +6,6 @@ from django.utils.translation import ugettext_lazy as _
 
 from .soft_deletion_model import SoftDeletionModel
 
-from django.core.exceptions import PermissionDenied, FieldError
-
 
 class BaseModel(SoftDeletionModel):
     """
@@ -15,7 +13,6 @@ class BaseModel(SoftDeletionModel):
 
     Contains the base properties and methods for all models.
     """
-
     uuid = models.UUIDField(
         verbose_name=_('Unique Identifier'),
         help_text=_('Unique Identifier.'),
@@ -77,36 +74,6 @@ class BaseModel(SoftDeletionModel):
             permission=permission,
             model=model.to_lower())
         return getattr(user, permission_name)
-
-    def create(self, *args, **kwargs):
-        """
-        Creates an object and return that
-        """
-        permission = "add"
-        if not created_by:
-            raise FieldError("'created_by' must be supplied.")
-        if not self._check_permission(user=created_by,
-                                      permission=permission,
-                                      model=self.__class__.__name__):
-            raise PermissionDenied("User doesn't have ADD permission in {model}.".format(
-                model=self.__class__.__name__))
-        return super(BaseModel, self).create(*args, **kwargs)
-
-    def update(self, *args, **kwargs):
-        """
-        Updates an object and return number of objects is updated
-        """
-        permission = "change"
-        print('hasattr', hasattr(kwargs, 'updated_by'))
-        if not updated_by:
-            raise FieldError("'updated_by' must be supplied.")
-        print('updated_by', updated_by)
-        if not self._check_permission(user=updated_by,
-                                      permission=permission,
-                                      model=self.__class__.__name__):
-            raise PermissionDenied("User doesn't have CHANGE permission in {model}.".format(
-                model=self.__class__.__name__))
-        return super(BaseModel, self).update(*args, **kwargs)
 
     def _created_at(self):
         return self.created_at.isoformat()

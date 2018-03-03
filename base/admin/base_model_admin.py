@@ -1,8 +1,6 @@
-from django.contrib import admin, messages
-from django.utils.translation import ugettext_lazy as _
+from django.contrib import admin
 
-
-class BaseAdmin(admin.ModelAdmin):
+class BaseModelAdmin(admin.ModelAdmin):
     """
     This class is base admin class. Whish holds the methods
     and properties for common operations for admin.
