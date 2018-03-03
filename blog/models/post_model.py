@@ -7,7 +7,7 @@ from .managers import PostModelManager
 
 class PostModel(BaseModel):
     """
-    This is the model for Category of the blog
+    This is the model for Posts of the blog
     """
     category = models.ForeignKey(
         'blog.CategoryModel',

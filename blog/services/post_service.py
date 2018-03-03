@@ -4,7 +4,7 @@ from base.services import BaseService, BaseModelService
 
 class PostService(BaseModelService, BaseService):
     """
-    Category Service functions are enlisted here.
+    PostService functions are enlisted here.
     """
 
     model = PostModel

@@ -3,7 +3,7 @@ from ...models import PostModel
 
 class PostModelSerializer(BaseModelSerializer):
 	"""
-	CategoryModelSerializer for category
+	PostModelSerializer for post
 	"""
 
 	class Meta:
