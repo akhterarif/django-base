@@ -9,5 +9,8 @@ class CategoryService(BaseModelService, BaseService):
 
     model = CategoryModel
 
-    def __init__(self):
-        super(CategoryService, self).__init__()
+    def __init__(self,
+                 *args,
+                 **kwargs):
+        super(CategoryService, self).__init__(*args,
+                                              **kwargs)
