@@ -1,8 +1,8 @@
 from rest_framework.generics import RetrieveAPIView
 
-class BaseListAPIView(RetrieveAPIView):
+class BaseRetrieveAPIView(RetrieveAPIView):
 	"""
 	BaseRetrieveAPIView for the project
 	"""
 	def __init__(self):
-		super(BaseListAPIView, self).__init__()
+		super(BaseRetrieveAPIView, self).__init__()
