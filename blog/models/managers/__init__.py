@@ -1,1 +1,1 @@
-from .category_manager import CategoryManager
+from .category_model_manager import CategoryModelManager
