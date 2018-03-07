@@ -2,11 +2,12 @@ from base.api.serializers import BaseModelSerializer
 from ...models import PostModel
 from ..serializers import CategoryModelSerializer
 
-class PostModelSerializer(BaseModelSerializer):
+
+class PostCreateSerializer(BaseModelSerializer):
 	"""
-	PostModelSerializer for post
+	PostCreateSerializer for post
 	"""
-	category = CategoryModelSerializer(read_only=True)
+	category = CategoryModelSerializer(required=True, many=True)
 
 	class Meta:
 		model = PostModel
