@@ -1,3 +1,5 @@
+from django.db.models.fields.related import ForeignKey, ManyToManyField, OneToOneField
+
 class BaseModelService(object):
     """
     This is the base service
@@ -44,8 +46,7 @@ class BaseModelService(object):
 
     def create(self,
                user,
-               data,
-               field_list=None):
+               data):
         """
         Creates an object of given data in db
 
@@ -54,13 +55,36 @@ class BaseModelService(object):
         :return: ModelObject
         """
         data_dict = {}
-        if field_list is None:
-            field_list = [field.name for field in self.model._meta.get_fields(
-            ) if field.name not in self.PREDEFINED_FIELD_LIST]
-        for field in field_list:
-            data_dict[field] = data.get(field, None)
+        related_fields_list = []
+        non_related_fields_list = []
+        fields_list = [field for field in self.model._meta.get_fields() \
+                       if field.name in data.keys()]
+        for field in fields_list:
+            if field.name not in self.PREDEFINED_FIELD_LIST:
+                if isinstance(field, ForeignKey) or \
+                        isinstance(field, ManyToManyField) or \
+                    isinstance(field, OneToOneField):
+                    related_fields_list.append(field)
+                else:
+                    non_related_fields_list.append(field)
+        for field in non_related_fields_list:
+            data_dict[field.name] = data[field.name]
         data_dict['created_by'] = user
-        return self.model.objects.create(**data_dict)
+        created_obj = self.model.objects.create(**data_dict)
+        for field in related_fields_list:
+            if isinstance(field, ForeignKey):
+                fields_instance, created = field.related_model.objects.get_or_create(**item)
+                setattr(created_obj, field.name, fields_instance)
+                created_obj.save()
+            elif isinstance(field, OneToOneField):
+                fields_instance= field.related_model.objects.create(**item)
+                setattr(created_obj, field.name, fields_instance)
+                created_obj.save()
+            elif isinstance(field, ManyToManyField):
+                for item in data[field.name]:
+                    fields_instance, created = field.related_model.objects.get_or_create(**item)
+                    getattr(created_obj, field.name).add(fields_instance)
+        return created_obj
 
     def update(self,
                user,
