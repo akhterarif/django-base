@@ -6,7 +6,7 @@ class PostAdmin(BaseModelAdmin):
     """
     list_display = ('id',
                     'uuid',
-                    'category',
+                    # 'category',
                     'title',
                     'text',
                     'created_by',)

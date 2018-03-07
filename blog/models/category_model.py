@@ -12,7 +12,9 @@ class CategoryModel(BaseModel):
     name = models.CharField(
         max_length=128,
         verbose_name=_('Category Name'),
-        help_text=_('Category Name.')
+        help_text=_('Category Name.'),
+        null=True,
+        blank=True,
     )
 
     def __str__(self):
