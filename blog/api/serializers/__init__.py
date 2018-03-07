@@ -1,2 +1,4 @@
-from .category_model_serializer import CategoryModelSerializer
-from .post_model_serializer import PostModelSerializer
+from .category_output_serializer import CategoryOutputSerializer
+from .category_create_serializer import CategoryCreateSerializer
+from .post_output_serializer import PostOutputSerializer
+from .post_create_serializer import PostCreateSerializer
