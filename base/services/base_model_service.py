@@ -65,17 +65,24 @@ class BaseModelService(object):
         """
         for field in fields_list:
             if isinstance(field, ForeignKey):
-                fields_instance, created = field.related_model.objects.get_or_create(**item)
+                fields_instance = field.related_model.objects.get(uuid=self.data[field.name]['uuid'])
                 setattr(model_obj, field.name, fields_instance)
                 model_obj.save()
             elif isinstance(field, OneToOneField):
-                fields_instance = field.related_model.objects.create(**item)
+                fields_instance = field.related_model.objects.get_or_create(**self.data[field.name])
                 setattr(model_obj, field.name, fields_instance)
                 model_obj.save()
             elif isinstance(field, ManyToManyField):
-                for item in self.data[field.name]:
-                    fields_instance, created = field.related_model.objects.get_or_create(**item)
-                    getattr(model_obj, field.name).add(fields_instance)
+                new_creating_uuid_list = [item['uuid'] for item in self.data[field.name]]
+                all_m2m_related_obj_qs = getattr(model_obj, field.name).all()
+                new_creating_related_obj_qs = field.related_model.objects.filter(
+                        uuid__in=new_creating_uuid_list)
+                old_m2m_deleting_objects_uuid_list = [item.uuid for item in all_m2m_related_obj_qs if item not in new_creating_related_obj_qs]
+                getattr(model_obj, field.name).filter(uuid__in=old_m2m_deleting_objects_uuid_list).delete()
+                present_m2m_objects_qs = getattr(model_obj, field.name).all()
+                for obj in new_creating_related_obj_qs:
+                    if obj not in present_m2m_objects_qs:
+                        getattr(model_obj, field.name).add(obj)
         return model_obj
 
     def get(self,
@@ -118,7 +125,7 @@ class BaseModelService(object):
         data_dict['created_by'] = user
         created_obj = self.model.objects.create(**data_dict)
         res = self._set_related_fields_value(model_obj=created_obj,
-                                                     fields_list=related_fields_list)
+                                             fields_list=related_fields_list)
         return res
 
     def update(self,
