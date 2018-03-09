@@ -1,10 +1,8 @@
 from rest_framework.generics import CreateAPIView
-from rest_framework.mixins import CreateModelMixin
-from base.api.serializers import BaseModelSerializer
 from rest_framework.response import Response
 from rest_framework import status
 
-class BaseCreateAPIView(CreateAPIView, CreateModelMixin):
+class BaseCreateAPIView(CreateAPIView):
 	"""
 	BaseCreateAPIView for the project
 	"""
