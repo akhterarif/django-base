@@ -1,4 +1,5 @@
 from .category_output_serializer import CategoryOutputSerializer
 from .category_create_serializer import CategoryCreateSerializer
+from .category_update_serializer import CategoryUpdateSerializer
 from .post_output_serializer import PostOutputSerializer
 from .post_create_serializer import PostCreateSerializer
