@@ -12,6 +12,7 @@ class BaseModelService(object):
     def __init__(self,
                  *args,
                  **kwargs):
+        self.data = {}
         super(BaseModelService, self).__init__(*args,
                                                **kwargs)
 
@@ -19,6 +20,63 @@ class BaseModelService(object):
                 "'%s' must include a `model` attribute."
                 % self.__class__.__name__
         )
+
+    def _get_fields_list(self):
+        """
+        Returns related_fields_list, non_related_fields_list of a model
+        :return: tuple of related_fields_list, non_related_fields_list
+        """
+        related_fields_list = []
+        non_related_fields_list = []
+        fields_list = [field for field in self.model._meta.get_fields() \
+                       if field.name in self.data.keys()]
+        for field in fields_list:
+            if field.name not in self.PREDEFINED_FIELD_LIST:
+                if isinstance(field, ForeignKey) or \
+                        isinstance(field, ManyToManyField) or \
+                        isinstance(field, OneToOneField):
+                    related_fields_list.append(field)
+                else:
+                    non_related_fields_list.append(field)
+        return related_fields_list, non_related_fields_list
+
+    def _get_save_data(self,
+                       fields_list):
+        """
+        Returns data dict of the values which has to be created or updated
+
+        :param fields_list: list of fields
+        :return: data_dict
+        """
+        data_dict = {}
+        for field in fields_list:
+            data_dict[field.name] = self.data[field.name]
+        return data_dict
+
+    def _set_related_fields_value(self,
+                                  model_obj,
+                                  fields_list):
+        """
+        Creates or Updates the model_obj's related(ForeignKey, OneToOne, ManyToMany) fields.
+
+        :param model_obj: object of the assigned model
+        :param fields_list: list of fields to be created or updated in model object
+        :return: model_obj
+        """
+        for field in fields_list:
+            if isinstance(field, ForeignKey):
+                fields_instance, created = field.related_model.objects.get_or_create(**item)
+                setattr(model_obj, field.name, fields_instance)
+                model_obj.save()
+            elif isinstance(field, OneToOneField):
+                fields_instance = field.related_model.objects.create(**item)
+                setattr(model_obj, field.name, fields_instance)
+                model_obj.save()
+            elif isinstance(field, ManyToManyField):
+                for item in self.data[field.name]:
+                    fields_instance, created = field.related_model.objects.get_or_create(**item)
+                    getattr(model_obj, field.name).add(fields_instance)
+        return model_obj
 
     def get(self,
             *args,
@@ -54,43 +112,19 @@ class BaseModelService(object):
         :param field_list: list of fields which have to create
         :return: ModelObject
         """
-        data_dict = {}
-        related_fields_list = []
-        non_related_fields_list = []
-        fields_list = [field for field in self.model._meta.get_fields() \
-                       if field.name in data.keys()]
-        for field in fields_list:
-            if field.name not in self.PREDEFINED_FIELD_LIST:
-                if isinstance(field, ForeignKey) or \
-                        isinstance(field, ManyToManyField) or \
-                    isinstance(field, OneToOneField):
-                    related_fields_list.append(field)
-                else:
-                    non_related_fields_list.append(field)
-        for field in non_related_fields_list:
-            data_dict[field.name] = data[field.name]
+        self.data = data
+        related_fields_list, non_related_fields_list = self._get_fields_list()
+        data_dict = self._get_save_data(fields_list=non_related_fields_list)
         data_dict['created_by'] = user
         created_obj = self.model.objects.create(**data_dict)
-        for field in related_fields_list:
-            if isinstance(field, ForeignKey):
-                fields_instance, created = field.related_model.objects.get_or_create(**item)
-                setattr(created_obj, field.name, fields_instance)
-                created_obj.save()
-            elif isinstance(field, OneToOneField):
-                fields_instance= field.related_model.objects.create(**item)
-                setattr(created_obj, field.name, fields_instance)
-                created_obj.save()
-            elif isinstance(field, ManyToManyField):
-                for item in data[field.name]:
-                    fields_instance, created = field.related_model.objects.get_or_create(**item)
-                    getattr(created_obj, field.name).add(fields_instance)
-        return created_obj
+        res = self._set_related_fields_value(model_obj=created_obj,
+                                                     fields_list=related_fields_list)
+        return res
 
     def update(self,
                user,
                uuid,
-               data,
-               field_list=None):
+               data):
         """
         Updates the data of given uuid
 
@@ -99,18 +133,16 @@ class BaseModelService(object):
         :param field_list: list of fields which have to update
         :return: ModelObject
         """
-        data_dict = {}
-        if field_list is None:
-            field_list = [field.name for field in self.model._meta.get_fields(
-            ) if field.name not in self.PREDEFINED_FIELD_LIST]
-        updating_obj = self.model.objects.get_by_uuid(uuid=uuid)
-        for field in field_list:
-            value = data.get(field, None)
-            if hasattr(updating_obj, field):
-                setattr(updating_obj, field, value)
-                updating_obj.save()
-        updating_obj.updated_by = user
-        updating_obj.save()
+        self.data = data
+        related_fields_list, non_related_fields_list = self._get_fields_list()
+        data_dict = self._get_save_data(fields_list=non_related_fields_list)
+        data_dict['updated_by'] = user
+        updating_obj = self.model.objects.get(uuid=uuid)
+        for key, val in data_dict.items():
+            setattr(updating_obj, key, val)
+            updating_obj.save()
+        res = self._set_related_fields_value(model_obj=updating_obj,
+                                             fields_list=related_fields_list)
         return updating_obj
 
     def delete(self,
