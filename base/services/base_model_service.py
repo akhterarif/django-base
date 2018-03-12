@@ -161,7 +161,7 @@ class BaseModelService(object):
         :param uuid: uuid of the object which has to be deleted
         :return: ModelObject
         """
-        deleting_obj = self.model.objects.get_by_uuid(uuid=uuid)
+        deleting_obj = self.model.objects.get(uuid=uuid)
         deleting_obj.updated_by = user
         deleting_obj.save()
         ret_obj = deleting_obj
