@@ -4,3 +4,6 @@ from .category_update_serializer import CategoryUpdateSerializer
 from .post_output_serializer import PostOutputSerializer
 from .post_create_serializer import PostCreateSerializer
 from .post_update_serializer import PostUpdateSerializer
+from .tag_create_serializer import TagCreateSerializer
+from .tag_output_serializer import TagOutputSerializer
+from .tag_update_serializer import TagUpdateSerializer
