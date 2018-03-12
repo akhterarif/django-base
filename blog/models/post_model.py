@@ -31,6 +31,14 @@ class PostModel(BaseModel):
         null=True,
         blank=True,
     )
+    tags = models.ManyToManyField(
+        'blog.TagModel',
+        verbose_name=_('Tags'),
+        help_text=_('Select Tags.'),
+        related_name='post_model_tag',
+        null=True,
+        blank=True,
+    )
 
     def __str__(self):
         return "{category}-{title}".format(category=self.category, title=self.title)
