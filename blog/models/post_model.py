@@ -9,12 +9,14 @@ class PostModel(BaseModel):
     """
     This is the model for Posts of the blog
     """
-    category = models.ManyToManyField(
+    category = models.ForeignKey(
         'blog.CategoryModel',
         verbose_name=_('Category'),
         help_text=_('Select a Category Name.'),
-        related_name='post_model_categories',
-        # on_delete=models.CASCADE,
+        related_name='post_model_category',
+        on_delete=models.CASCADE,
+        null=True,
+        blank=True,
     )
     title = models.CharField(
         max_length=256,
