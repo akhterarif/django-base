@@ -1,5 +1,9 @@
 from django.urls import re_path, path
-from blog.api.views import CategoryListAPIView, CategoryCreateAPIView, CategoryUpdateAPIView, PostListAPIView, PostCreateAPIView, PostUpdateAPIView
+from blog.api.views import (CategoryListAPIView, CategoryCreateAPIView, CategoryUpdateAPIView,
+							PostListAPIView, PostCreateAPIView, PostUpdateAPIView,
+							TagListAPIView, TagCreateAPIView, TagUpdateAPIView)
+
+
 
 urlpatterns = [
 	path(r'category/create/', CategoryCreateAPIView().as_view(), name='category_create'),
@@ -8,4 +12,7 @@ urlpatterns = [
     path('post/create/', PostCreateAPIView().as_view(), name='post_create'),
     path('post/update/<uuid:uuid>/', PostUpdateAPIView().as_view(), name='post_update'),
     path(r'post/', PostListAPIView().as_view(), name='post'),
+	path('tag/create/', TagCreateAPIView().as_view(), name='tag_create'),
+    path('tag/update/<uuid:uuid>/', TagUpdateAPIView().as_view(), name='tag_update'),
+    path(r'tag/', TagListAPIView().as_view(), name='tag'),
 ]
