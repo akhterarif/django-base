@@ -36,7 +36,6 @@ class PostModel(BaseModel):
         verbose_name=_('Tags'),
         help_text=_('Select Tags.'),
         related_name='post_model_tag',
-        null=True,
         blank=True,
     )
 
