@@ -11,7 +11,9 @@ class MessageManager(object):
     Class for manging the messages for different classes
     """
 
-    def __init__(self):
+    def __init__(self,
+                 *args,
+				 **kwargs):
         self.apiview_messages = API_VIEW_MSG
         self.generic_messages = GENERIC_MSG
         self.model_messages = MODEL_MSG
@@ -20,7 +22,8 @@ class MessageManager(object):
         self.all_messages = {**self.apiview_messages, **self.generic_messages,
                              **self.model_messages, **self.manager_messages, **self.service_messages}
         self.default_language = settings.DEFAULT_LANGUAGE
-        super(MessageManager, self).__init__()
+        super(MessageManager, self).__init__(*args,
+                                             **kwargs)
 
     def get_msg(self, code, language_code=None, context_data={}):
         """

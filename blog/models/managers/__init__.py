@@ -1,1 +1,3 @@
-from .category_manager import CategoryManager
+from .category_model_manager import CategoryModelManager
+from .post_model_manager import PostModelManager
+from .tag_model_manager import TagModelManager

@@ -4,5 +4,8 @@ class BaseService(object):
     Common service-methods for the project are enlisted here
     """
 
-    def __init__(self):
-        super(BaseService, self).__init__()
+    def __init__(self,
+                 *args,
+                 **kwargs):
+        super(BaseService, self).__init__(*args,
+                                          **kwargs)

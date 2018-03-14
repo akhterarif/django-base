@@ -4,5 +4,9 @@ class BaseModelSerializer(ModelSerializer):
 	"""
 	BaseModelSerializer for the project
 	"""
-	def __init__(self):
-		super(BaseModelSerializer, self).__init__()
+
+	def __init__(self,
+				 *args,
+				 **kwargs):
+		super(BaseModelSerializer, self).__init__(*args,
+												  **kwargs)
