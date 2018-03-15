@@ -1,7 +1,4 @@
-from django.urls import re_path, path
-# from blog.api.views import (CategoryListAPIView, CategoryCreateAPIView, CategoryUpdateAPIView,
-# 							PostListAPIView, PostCreateAPIView, PostUpdateAPIView,
-# 							TagListAPIView, TagCreateAPIView, TagUpdateAPIView)
+from django.urls import path
 from blog.api import views
 
 
