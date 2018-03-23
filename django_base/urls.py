@@ -10,5 +10,5 @@ urlpatterns = [
     path('api-token-refresh/', refresh_jwt_token),
     path('api-token-verify/', verify_jwt_token),
     path('api/auth/', include('rest_framework.urls')),
-    path('api/blog/', include('blog.api.urls'))
+    path('api/blog/', include('blog.api.urls'), name='blog')
 ]

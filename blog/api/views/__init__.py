@@ -1,5 +1,6 @@
 from .category_create_apiview import CategoryCreateAPIView
 from .category_update_apiview import CategoryUpdateAPIView
+from .category_retrieve_apiview import CategoryRetrieveAPIView
 from .category_list_apiview import CategoryListAPIView
 from .post_create_apiview import PostCreateAPIView
 from .post_update_apiview import PostUpdateAPIView

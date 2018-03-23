@@ -1,6 +1,7 @@
 from .category_output_serializer import CategoryOutputSerializer
 from .category_create_serializer import CategoryCreateSerializer
 from .category_update_serializer import CategoryUpdateSerializer
+from .category_retrieve_serializer import CategoryRetrieveSerializer
 from .tag_output_serializer import TagOutputSerializer
 from .tag_create_serializer import TagCreateSerializer
 from .tag_update_serializer import TagUpdateSerializer
