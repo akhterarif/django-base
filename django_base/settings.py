@@ -43,7 +43,6 @@ PREREQUISITE_APPS = [
 
 PROJECT_APPS = [
     'base',
-    'blog'
 ]
 
 INSTALLED_APPS = PREREQUISITE_APPS + PROJECT_APPS
@@ -120,6 +119,9 @@ REST_FRAMEWORK = {
         'rest_framework.authentication.SessionAuthentication',
         'rest_framework.authentication.BasicAuthentication',
     ),
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.LimitOffsetPagination',
+    'PAGE_SIZE': 100,
 }
 import datetime
 JWT_AUTH = {
@@ -151,4 +153,4 @@ DEFAULT_LANGUAGE = 'en'
 
 
 # default super admin name
-DEFAULT_SUPER_ADMIN_NAME='arif'
+DEFAULT_SUPER_ADMIN_NAME = 'arif'
