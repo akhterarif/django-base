@@ -43,7 +43,6 @@ PREREQUISITE_APPS = [
 
 PROJECT_APPS = [
     'base',
-    'blog'
 ]
 
 INSTALLED_APPS = PREREQUISITE_APPS + PROJECT_APPS
@@ -154,4 +153,4 @@ DEFAULT_LANGUAGE = 'en'
 
 
 # default super admin name
-DEFAULT_SUPER_ADMIN_NAME='arif'
+DEFAULT_SUPER_ADMIN_NAME = 'arif'

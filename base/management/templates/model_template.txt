@@ -1,0 +1,22 @@
+from django.db import models
+from django.utils.translation import ugettext_lazy as _
+
+{extended_model_class_module}
+from .managers import {model}Manager
+
+
+
+class {model}({extended_model}):
+    """
+    Give a description of the model here
+    """
+
+    def __str__(self):
+        return "{model}-{id}".format(model={model}, id=id)
+
+    objects = {model}Manager()
+
+    class Meta:
+        db_table = '{app}_{model_lowercase_plural}'
+        verbose_name = _('{model_title}')
+        verbose_name_plural = _('{model_title_plural}')
