@@ -1,0 +1,10 @@
+from base.models.managers import {extended_model_manager}
+
+
+class {model_manager}({extended_model_manager}):
+
+    def __init__(self,
+                 *args,
+                 **kwargs):
+        super({model_manager}, self).__init__(*args,
+                                              **kwargs)
