@@ -10,6 +10,7 @@ class Command(BaseCommand):
     BASE_MODEL_CLASS_IMPORT = 'from base.models.base_model import BaseModel'
     BASE_MODEL_NAME = 'BaseModel'
     MODEL_IMPORT_ON_INIT_STR = '\nfrom .{model_file_name} import {model_name}'
+    MODEL_MANAGER_IMPORT_ON_INIT_STR = '\nfrom .{model_manager_file_name} import {model_manager_name}'
     MODEL_ARGS_DICT = {
         'extended_model_class_module': '',
         'model': '',
@@ -20,7 +21,7 @@ class Command(BaseCommand):
         'id': 'id',
         'app': '',
     }
-    BASE_MODEL_NAME = 'BaseModelManager'
+    BASE_MODEL_MANAGER_NAME = 'BaseModelManager'
     MODEL_MANAGER_ARGS_DICT = {
         'model_manager': '',
         'extended_model_manager': '',
@@ -34,6 +35,15 @@ class Command(BaseCommand):
         with open(model_template_path, 'r') as model_template:
             model_template_format = model_template.read()
         return model_template_format
+
+    def _get_model_manager_template_format(self):
+        base_path = os.path.dirname(base.__file__)
+        model_manager_template_path = os.path.join(
+            base_path, 'management/templates/model_manager_template.txt')
+
+        with open(model_manager_template_path, 'r') as model_template:
+            model_manager_template_format = model_template.read()
+        return model_manager_template_format
 
     def _write_on_file(self, file_path, file_content, mode='w'):
         if not os.path.exists(file_path):
@@ -64,18 +74,42 @@ class Command(BaseCommand):
             app=app, app_base_model=app_base_model)
         return app_base_model, app_models_module
 
-    def _create_model_manager(self, model_name, model_file_name, model_file_path):
+    def _create_model_manager(self,
+                              app,
+                              app_path,
+                              model_name,
+                              model_file_name):
         # create managers variables Value
         model_manager_name = model_name + 'Manager'
         model_manger_file_name = model_file_name + '_manager'
-        model_manger_file_path = model_file_path + \
-            '/managers/' + model_manager_name + '.py'
+        model_manger_file_path = app_path + \
+            '/models/managers/' + model_manger_file_name + '.py'
+        base_model_manger_name = self.BASE_MODEL_MANAGER_NAME
 
         # create model managers template
-        # ,
+        model_manager_format = self._get_model_manager_template_format()
+        managers_formats_value = self.MODEL_MANAGER_ARGS_DICT
+        managers_formats_value['model_manager'] = model_manager_name
+        managers_formats_value['extended_model_manager'] = base_model_manger_name
+
+        manager_file_content = model_manager_format.format(
+            **managers_formats_value)
 
         # create model manager
+        model_manager_created = self._write_on_file(
+            file_path=model_manger_file_path, file_content=manager_file_content, mode='w')
         # append the init file
+        manger_init_files_folder = 'models/managers'
+        manager_init_file_path = self._get_apps_init_file_path(app=app,
+                                                               folder_name=manger_init_files_folder)
+        manager_init_content = self.MODEL_MANAGER_IMPORT_ON_INIT_STR
+        manager_init_file_content = manager_init_content.format(model_manager_file_name=model_manger_file_name,
+                                                                model_manager_name=model_manager_name)
+
+        manager_file_appended = self._write_on_file(file_path=manager_init_file_path,
+                                                    file_content=manager_init_file_content,
+                                                    mode='a+')
+        return manager_file_appended and model_manager_created
 
     def add_arguments(self, parser):
         parser.add_argument('app', type=str)
@@ -119,7 +153,10 @@ class Command(BaseCommand):
             file_path=init_file_path, file_content=init_file_str, mode='a+')
 
         # creating the model manager
-        model_manager_created = self._create_model_manager()
+        model_manager_created = self._create_model_manager(app=app,
+                                                           app_path=app_path,
+                                                           model_name=model_name,
+                                                           model_file_name=model_file_name)
         if model_is_created:
             self.stdout.write(
                 self.style.SUCCESS(

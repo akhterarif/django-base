@@ -1,10 +1,10 @@
 from base.models.managers import BaseModelManager
 
 
-class TagModelManager(BaseModelManager):
+class TestModelManager(BaseModelManager):
 
     def __init__(self,
                  *args,
                  **kwargs):
-        super(TagModelManager, self).__init__(*args,
+        super(TestModelManager, self).__init__(*args,
                                               **kwargs)
