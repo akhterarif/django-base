@@ -1,1 +1,0 @@
-from .category_create_list_apiview import CategoryCreateListAPIView

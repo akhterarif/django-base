@@ -1,1 +1,0 @@
-from .category_filterset import CategoryFilterSet
