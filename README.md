@@ -10,3 +10,7 @@
 4. Download `zip` or clone these codes from here and paste this on the base folder.
 `git clone https://github.com/ubuntuarif/django-base.git`
 5. Add the `base` app in the `settings.py` file's `INSTALLED_APPS` list.
+
+
+### Example
+[Click Here](https://github.com/ubuntuarif/django-base-example) to see the example made by using this `base` application.
