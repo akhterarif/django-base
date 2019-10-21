@@ -6,7 +6,7 @@ coreschema==0.0.4
 decorator==4.1.2
 Django==2.0
 django-filter==1.1.0
-djangorestframework==3.7.7
+djangorestframework==3.9.1
 djangorestframework-jwt==1.11.0
 drf-writable-nested==0.4.1
 idna==2.6
